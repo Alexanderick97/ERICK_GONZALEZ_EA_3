@@ -1,0 +1,188 @@
+import os
+
+lar_Fila = 5
+lar_Columnas = 10
+
+
+asientos = [[(( fil * 10) + col + 1) for col in range(lar_Columnas)] for fil in range(lar_Fila)]
+
+precios = [100_000,100_000,50_000,10_000,10_000]
+
+def mostrar():
+
+    print("\n\t")
+    for fila in asientos:
+        for columna in fila:
+            if type(columna) is int or columna is float:
+
+
+                num_Mostrar = f"[ {columna}  ]" if columna < 10 else f"[ {columna} ]"
+                
+                print(num_Mostrar, end="")
+            else:
+                print("( X  )", end="")
+        print("\t")
+
+
+
+def comprar(rut):
+
+    mostrar()
+    try:
+        compra = int(input("\n\tingrese asiento a comprar >> "))
+    except(ValueError, TypeError):
+        print(f"\n\n\tIngrese opcion valida entre 1 y {lar_Fila * lar_Columnas} compra no efectuada")
+        compra = 0
+        return False
+
+    if compra in range(1, (lar_Fila*lar_Columnas)):
+
+        if (compra % 10) != 0:
+            fila = compra//lar_Columnas
+            columna = (compra % lar_Columnas) -1
+        else:
+            fila = (compra//lar_Columnas) -1
+            columna = lar_Columnas -1
+
+        
+        if type(asientos[fila][columna]) is int or type(asientos[fila][columna]) is float:
+            asientos[fila][columna] = rut
+            print("\n\tAsiento comprado\n")
+            return True
+        
+        else:
+            print("\n\tAsiento Ocupado, Compra Cancelada\n")
+            return False
+    else:
+        print(f"\n\tAsiento no Valido ingrese opcion entre 1 y {lar_Fila * lar_Columnas} , Compra Cancelada\n")
+        return False
+
+def comprando():
+    print("\n\n\t[Menu Compra Entradas]")
+    rut = input("\n\tIngrese el Rut compra: ")
+    
+    opcionCompra = -1
+    while opcionCompra not in (0,1,2):
+        opcionCompra = int(input("\tCuantas entradas desea comprar 0,1,2 => "))
+        
+        if opcionCompra not in (0,1,2):
+            print("\n\n\t ingrese una opcion valida 0, 1, 2\n\n")
+
+
+    if opcionCompra != 0:
+        contador = 0
+        while contador < opcionCompra:
+            compra_hecha = comprar(rut)
+            if compra_hecha:
+                contador += 1
+
+
+
+def ganancias_totales():
+    ganancia = 0
+    contador = 0
+    fila = 0
+    
+    while fila < len(asientos):
+        columna = 0
+        
+        while columna < len(asientos[fila]):
+
+            if type(asientos[fila][columna]) is str: 
+                ganancia += precios[fila]
+                contador+=1
+            
+            columna += 1
+
+        fila += 1
+
+    print(f"\n\n\tSe han vendido {contador} entradas con una ganancia total de { " {:,}".format(ganancia).replace(",",".") }\n\n")
+
+
+
+def compradores():
+    fila = 0
+    
+    while fila < len(asientos):
+        columna = 0
+        
+        while columna < len(asientos[fila]):
+            
+            if type(asientos[fila][columna]) is str: 
+                
+             
+                asiento = (fila * lar_Columnas ) + columna + 1
+                print(f"\tCliente : {asientos[fila][columna]} asiento: {asiento} valor entrada: ${ "{:,}".format(precios[fila]).replace(",",".") }")
+            
+            columna += 1
+
+        fila += 1
+
+try:
+    #Comienzo
+    while True:
+
+        os.system('cls')
+        print ("\t\t[Bienvenido a la productora *Sanchez Producciones*]")
+        print ("\t\t\tDigite una de las siguientes opciones")
+        print("\n\tOpcion 1) Comprar entradas\t\tOpcion 2) Ver ubicaciones disponibles")
+        print("\tOpcion 3) Ver listado de asistentes\tOpcion 4) Mostrar ganancias")
+        print("\tOpcion 5) Salir")
+        opcion = int(input("\t\t\t\t\t[=> <=]\b\b\b\b"))
+
+        match opcion:
+            case 1:
+                #Compra entradas
+                os.system("cls")
+                
+                comprando()
+                input("\n\n\t[Presiona Enter para continuar]")
+            case 2:
+                #Ver ubicaciones
+                os.system("cls")
+
+                print("\n\n\t[Menu Mostrar Ubicacion]")
+                mostrar()
+                input("\n\n\t[Presiona Enter para continuar]")
+
+            case 3:
+                #Ver listado de asistentes
+                os.system("cls")
+
+                print("\n\n\t[El Listado de Asistentes es]")
+                compradores()
+                input("\n\n\t[Presiona Enter para continuar]")
+            case 4:
+                #Mostrar ganancias
+                os.system("cls")
+
+                print("\n\n\t*** GANANCIAS TOTALES ***")
+                ganancias_totales()
+
+                input("\n\n\t[Presiona Enter para continuar]")
+
+            case 5:
+                #Salida
+                os.system("cls")
+                
+                print ("Gracias por usar el codigo echo por Erick Gonzalez\nEsto fue efectuado")
+
+                {os.system("date")}
+
+                input("\n\t[Presiona Enter para continuar]")
+                break
+
+            case _:
+                os.system("cls")
+                
+                print("opcion no valida")
+                input("\n\n\t[Presiona Enter para continuar]")
+
+except ValueError:
+    print ("Error Inesperado por valor de datoreintente")
+except SyntaxError:
+    print ("Error inesperado por redaccion de dato reintente")
+except TypeError:
+    print ("Error inesperado por tipo de dato reintente")
+except:
+    print ("Error inesperado reintente")
